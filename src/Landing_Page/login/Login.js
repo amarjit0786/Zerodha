@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify"; // Import toast for notifications
+import { ToastContainer, toast } from "react-toastify"; // Importing toast for notifications
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
-    username: "",
   });
-  const { email, password, username } = inputValue;
+  const { email, password } = inputValue;
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -34,15 +33,16 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3002/signup",
+        "http://localhost:3002/login",
         { ...inputValue },
         { withCredentials: true }
       );
+      console.log(data);
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/"); // Redirect to home page after successful signup
+          navigate("/"); // Redirect to home page after successful login
         }, 2000);
       } else {
         handleError(message);
@@ -56,7 +56,6 @@ const Signup = () => {
     setInputValue({
       email: "",
       password: "",
-      username: "",
     });
   };
 
@@ -66,7 +65,7 @@ const Signup = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card shadow-lg">
             <div className="card-body">
-              <h2 className="text-center mb-4">Signup Account</h2>
+              <h2 className="text-center mb-4">Login Account</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -79,21 +78,6 @@ const Signup = () => {
                     className="form-control"
                     value={email}
                     placeholder="Enter your email"
-                    onChange={handleOnChange}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="username" className="form-label">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    className="form-control"
-                    value={username}
-                    placeholder="Enter your username"
                     onChange={handleOnChange}
                     required
                   />
@@ -115,12 +99,12 @@ const Signup = () => {
                 </div>
                 <div className="d-grid gap-2">
                   <button type="submit" className="btn btn-primary">
-                    Sign Up
+                    Login
                   </button>
                 </div>
                 <div className="text-center mt-3">
                   <span>
-                    Already have an account? <Link to="/login">Login</Link>
+                    Don't have an account? <Link to="/signup">Signup</Link>
                   </span>
                 </div>
               </form>
@@ -133,4 +117,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
